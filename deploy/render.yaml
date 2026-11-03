@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: free-autogtm
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python3 -u cli.py serve --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /api/stats-public
+    envVars:
+      - key: FREE_AUTOGTM_ADMIN_USER
+        value: admin
+      - key: FREE_AUTOGTM_ADMIN_PASSWORD
+        sync: false
+      # FREE_AUTOGTM_BASE_PATH is intentionally NOT set here:
+      # on Render the tool runs at the service root (/), not under /tool.
+      # Admin is at /admin on the Render URL.
