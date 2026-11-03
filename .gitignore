@@ -1,0 +1,5 @@
+data.db
+config.json
+outbox.csv
+__pycache__/
+*.pyc

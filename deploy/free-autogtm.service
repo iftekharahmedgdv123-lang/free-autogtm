@@ -1,0 +1,18 @@
+[Unit]
+Description=Free AutoGTM dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/free-autogtm
+ExecStart=/usr/bin/python3 cli.py serve --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=5
+Environment=FREE_AUTOGTM_DB=/opt/free-autogtm/data.db
+# Change these before going live — the admin panel login at /admin uses them.
+Environment=FREE_AUTOGTM_ADMIN_USER=admin
+Environment=FREE_AUTOGTM_ADMIN_PASSWORD=changeme123
+
+[Install]
+WantedBy=multi-user.target
