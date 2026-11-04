@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=/opt/free-autogtm
-ExecStart=/usr/bin/python3 cli.py serve --host 127.0.0.1 --port 8000
+ExecStart=/usr/bin/python3 -u cli.py serve --host 127.0.0.1 --port 8000
 Restart=always
 RestartSec=5
 Environment=FREE_AUTOGTM_DB=/opt/free-autogtm/data.db

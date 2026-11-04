@@ -23,6 +23,13 @@ htpasswd -c /etc/nginx/.free-autogtm-htpasswd "$AUTH_USER"
 
 echo "== Installing systemd service =="
 cp "$SCRIPT_DIR/free-autogtm.service" /etc/systemd/system/free-autogtm.service
+echo "== Admin Panel login (the /admin login inside the app) =="
+read -rp "Admin username: " ADMIN_USER
+read -rsp "Admin password: " ADMIN_PASS
+echo
+if [ -z "$ADMIN_USER" ] || [ -z "$ADMIN_PASS" ]; then echo "Admin username and password are required."; exit 1; fi
+sed -i "s/^Environment=FREE_AUTOGTM_ADMIN_USER=.*/Environment=FREE_AUTOGTM_ADMIN_USER=$ADMIN_USER/" /etc/systemd/system/free-autogtm.service
+sed -i "s/^Environment=FREE_AUTOGTM_ADMIN_PASSWORD=.*/Environment=FREE_AUTOGTM_ADMIN_PASSWORD=$ADMIN_PASS/" /etc/systemd/system/free-autogtm.service
 systemctl daemon-reload
 systemctl enable --now free-autogtm
 

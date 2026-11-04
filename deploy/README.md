@@ -1,9 +1,11 @@
 # Deploy Free AutoGTM to a MetroVPS VPS
 
 **Do not put this dashboard on the public internet without a password.**
-It has no login of its own — the password protection below (nginx
-`auth_basic`) is what keeps your leads private. If you skip it, anyone
-who finds the URL can see and approve your drafts.
+The app itself now has an Admin Panel login at `/admin` (set in step 2
+below — never leave it as the default). The installer also adds an
+nginx `auth_basic` prompt in front of the whole site, so visitors
+must pass that first prompt before the dashboard loads at all.
+Do not skip either password.
 
 ## What this deploys
 
@@ -47,9 +49,15 @@ cd free-autogtm && bash deploy/install.sh
 The installer will:
 - install Python 3 and nginx (if missing)
 - copy the app to `/opt/free-autogtm`
-- ask you to choose a dashboard username and password
+- ask you to choose a dashboard username and password (the nginx
+  prompt in front of the whole site)
+- ask you to choose an Admin Panel username and password (the
+  `/admin` login inside the app)
 - install the systemd service and nginx site
 - start the app
+
+On this VPS route the tool runs at the subdomain root (`/`), not
+under `/tool` — so do not set `FREE_AUTOGTM_BASE_PATH` here.
 
 ### 3. Point nginx at your subdomain
 
@@ -83,10 +91,10 @@ username/password you set in step 2, and use the dashboard as normal.
 ## Admin panel
 
 The main page has a separate **Admin Panel** button linking to `/admin`.
-Log in there with the admin user/password set in
-`/etc/systemd/system/free-autogtm.service` (change the default
-`changeme123` before going live, then `systemctl daemon-reload &&
-systemctl restart free-autogtm`).
+Log in there with the admin user/password you set in step 2 — they are
+stored in `/etc/systemd/system/free-autogtm.service`. To change them
+later, edit that file, then `systemctl daemon-reload &&
+systemctl restart free-autogtm`.
 
 To add the same button to your main website, copy
 `website-button-snippet.html` from the project and change its link to
